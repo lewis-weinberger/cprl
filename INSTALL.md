@@ -6,12 +6,12 @@ Currently the only way to use this project is to run from the REPL or build an e
 
 - Common Lisp:
   - [SBCL](http://www.sbcl.org/getting.html)
-  - [QuickLisp](https://www.quicklisp.org/beta/)
+  - [Quicklisp](https://www.quicklisp.org/beta/)
   - [Emacs](https://www.gnu.org/software/emacs/) + [SLIME](https://common-lisp.net/project/slime/) (recommended)
 - [BearLibTerminal](http://foo.wyrd.name/en:bearlibterminal)
 
 ## Setup
-Having installed the components described above, we can now setup this project to be run. To be picked up by QuickLisp, clone the repository into `local_projects`:
+Having installed the components described above, we can now set everything up. Perhaps the easiest way for the project to be picked up by Quicklisp is to clone the repository into `local_projects`:
 
 ```sh
 git clone https://github.com/lewis-weinberger/cprl.git ~/quicklisp/local_projects/cprl
@@ -41,4 +41,4 @@ The above setup has been tested to work on:
 
 ## Troubleshooting
 
-Please post an [issue](./issues) if you run into problems with the above.
+Please post an [issue](https://github.com/lewis-weinberger/cprl/issues) if you run into problems with the above.
