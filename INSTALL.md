@@ -43,8 +43,11 @@ You can use your native window closing functionality to exit the game.
 ## Known-working versions
 The above setup has been tested to work on:
 
-- MacOS with SBCL 2.0.6, BearLibTerminal 0.15.7, CFFI 0.23.0
-- (Gentoo) Linux with SBCL 2.0.5, BearLibTerminal 0.15.7, CFFI 0.23.0
+- MacOS 10.15.6 with SBCL 2.0.6, BearLibTerminal 0.15.7, CFFI 0.23.0
+- Gentoo Linux with SBCL 2.0.5, BearLibTerminal 0.15.7, CFFI 0.23.0
+- Microsoft Windows 10 1909 with SBCL 2.0.0, BearLibTerminal 0.15.7, CFFI 0.23.0
+
+[TODO] Setup continuous integration.
 
 ## Troubleshooting
 

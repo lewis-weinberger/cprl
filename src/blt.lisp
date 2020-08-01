@@ -3,7 +3,9 @@
 (in-package :blt)
 
 (define-foreign-library bearlibterminal
-    (t (:default "libBearLibTerminal")))
+  (:darwin "libBearLibTerminal.dylib")
+  (:unix "libBearLibTerminal.so")
+  (t (:default "BearLibTerminal")))
 
 (use-foreign-library bearlibterminal)
 
