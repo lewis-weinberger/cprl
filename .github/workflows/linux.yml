@@ -23,13 +23,15 @@ jobs:
     - name: install Quicklisp
       run: |
         wget https://beta.quicklisp.org/quicklisp.lisp
-        sbcl --load quicklisp.lisp \
-             --eval "(quicklisp-quickstart:install)" \
-             --eval "(ql:add-to-init-file)"
+        sbcl --disable-debugger \
+             --load quicklisp.lisp \
+             --eval "(quicklisp-quickstart:install)"
     - name: checkout repository
       uses: actions/checkout@v2
       with:
         path: 'quicklisp/local-projects/cprl'
     - name: compilation
-      run: sbcl --eval "(ql:quickload :cprl)" \
+      run: sbcl --disable-debugger \
+                --eval "(load "quicklisp/setup.lisp") \
+                --eval "(ql:quickload :cprl)" \
                 --eval "(asdf:make :cprl)"
