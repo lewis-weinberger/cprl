@@ -1,4 +1,4 @@
-name: Linux build
+name: linux-build
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
              --eval "(quicklisp-quickstart:install)" \
              --eval "(ql:add-to-init-file)"
     - name: checkout repository
-    - uses: actions/checkout@v2
+      uses: actions/checkout@v2
       path: 'quicklisp/local-projects/cprl'
     - name: compilation
       run: sbcl --eval "(ql:quickload :cprl)" \
