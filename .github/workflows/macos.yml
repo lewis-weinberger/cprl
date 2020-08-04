@@ -15,8 +15,8 @@ jobs:
         BLT_ARCHIVE: http://foo.wyrd.name/_media/en:bearlibterminal:bearlibterminal
         BLT_VERSION: 0.15.7
       run: |
-        wget ${BLT_ARCHIVE}_${BLT_VERSION}_osx.zip
-        unzip ${BLT_ARCHIVE}_${BLT_VERSION}_osx.zip
+        wget ${BLT_ARCHIVE}_${BLT_VERSION}_osx.zip -O blt.zip
+        unzip blt.zip
         sudo cp BearLibTerminal_${BLT_VERSION}/OSX/libBearLibTerminal.dylib /usr/local/lib/
     - name: install SBCL
       run: sudo brew install sbcl

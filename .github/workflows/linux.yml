@@ -17,7 +17,7 @@ jobs:
       run: |
         wget ${BLT_ARCHIVE}_${BLT_VERSION}.tar.bz2 -O blt.tar.bz2
         tar -xvjf blt.tar.bz2
-        sudo cp BearLibTerminal_${BLT_VERSION}/Linux64/libBearLibTerminal.so /usr/local/lib/
+        sudo cp BearLibTerminal_${BLT_VERSION}/Linux64/libBearLibTerminal.so /usr/lib/
     - name: install SBCL
       run: sudo apt-get install sbcl
     - name: install Quicklisp
