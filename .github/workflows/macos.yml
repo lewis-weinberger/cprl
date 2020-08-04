@@ -1,4 +1,4 @@
-name: Linux
+name: MacOS
 
 on:
   push:
@@ -8,18 +8,18 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: macos-10.15
     steps:
     - name: install BearLibTerminal
       env:
         BLT_ARCHIVE: http://foo.wyrd.name/_media/en:bearlibterminal:bearlibterminal
         BLT_VERSION: 0.15.7
       run: |
-        wget ${BLT_ARCHIVE}_${BLT_VERSION}.tar.bz2 -O blt.tar.bz2
-        tar -xvjf blt.tar.bz2
-        sudo cp BearLibTerminal_${BLT_VERSION}/Linux64/libBearLibTerminal.so /usr/local/lib/
+        wget ${BLT_ARCHIVE}_${BLT_VERSION}_osx.zip
+        unzip ${BLT_ARCHIVE}_${BLT_VERSION}_osx.zip
+        sudo cp BearLibTerminal_${BLT_VERSION}/OSX/libBearLibTerminal.dylib /usr/local/lib/
     - name: install SBCL
-      run: sudo apt-get install sbcl
+      run: sudo brew install sbcl
     - name: install Quicklisp
       run: |
         wget https://beta.quicklisp.org/quicklisp.lisp
