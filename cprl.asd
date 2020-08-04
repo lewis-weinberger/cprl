@@ -7,6 +7,10 @@
   :source-control (:git "git@github.com:lewis-weinberger/cprl.git")
   :description "A Cyberpunk-inspired Roguelike game."
   :depends-on (:cffi)
+  :defsystem-depends-on (:deploy)
+  :build-operation "deploy-op"
+  :build-pathname "cprl"
+  :entry-point "cprl:main"
   :components ((:module "src"
                 :serial t
                 :components

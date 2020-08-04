@@ -23,7 +23,7 @@ Start the `sbcl` REPL (from the shell or via SLIME) and load `cprl`:
 CL-USER> (ql:quickload :cprl)
 ```
 
-This should bring in the dependencies ([CFFI](https://common-lisp.net/project/cffi/)) if not already installed, and compile the source (to *fasl*).
+This should bring in the dependencies ([CFFI](https://common-lisp.net/project/cffi/), [Deploy](https://github.com/Shinmera/deploy)) if not already installed, and compile the source (to *fasl*).
 
 ## Running
 The entry-point to a playable "game" is `main`:
@@ -39,6 +39,16 @@ sbcl --eval "(ql:quickload :cprl)" --eval "(cprl:main)"
 ```
 
 You can use your native window closing functionality to exit the game.
+
+## Deploying
+
+To compile an executable (with the necessary libraries packaged alongside it), use `asdf:make`:
+
+```lisp
+CL-USER> (asdf:make :cprl)
+```
+
+This takes advantage of the handy [Deploy](https://github.com/Shinmera/deploy) library. The above command should produce a new directory, `bin`, containing the executable and libraries (e.g. on Linux `cprl` and `libBearLibTerminal.so`).
 
 ## Known-working versions
 The above setup has been tested to work on:
