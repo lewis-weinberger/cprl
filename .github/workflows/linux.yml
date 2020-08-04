@@ -12,20 +12,20 @@ jobs:
     steps:
     - name: install BearLibTerminal
       env:
-	BLT_ARCHIVE: http://foo.wyrd.name/_media/en:bearlibterminal:bearlibterminal
-	BLT_VERSION: 0.15.7
+        BLT_ARCHIVE: http://foo.wyrd.name/_media/en:bearlibterminal:bearlibterminal
+        BLT_VERSION: 0.15.7
       run: |
         wget ${BLT_ARCHIVE}_${BLT_VERSION}.tar.bz2 -O blt.tar.bz2
-	tar -xvjf blt.tar.bz2
-	sudo cp BearLibTerminal_${BLT_VERSION}/Linux64/libBearLibTerminal.so /usr/lib/
+        tar -xvjf blt.tar.bz2
+        sudo cp BearLibTerminal_${BLT_VERSION}/Linux64/libBearLibTerminal.so /usr/lib/
     - name: install SBCL
       run: sudo apt-get install sbcl
     - name: install Quicklisp
       run: |
         wget https://beta.quicklisp.org/quicklisp.lisp
-	sbcl --load quicklisp.lisp \
-	     --eval "(quicklisp-quickstart:install)" \
-	     --eval "(ql:add-to-init-file)"
+        sbcl --load quicklisp.lisp \
+             --eval "(quicklisp-quickstart:install)" \
+             --eval "(ql:add-to-init-file)"
     - name: checkout repository
     - uses: actions/checkout@v2
       path: 'quicklisp/local-projects/cprl'
