@@ -20,10 +20,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Libraries used by cprl
+Libraries and software used by cprl
 ---------------------------------
 1. BearLibTerminal -- http://foo.wyrd.name/en:bearlibterminal
-   Licensed under the MIT License (and others)
+   Licensed under the MIT (Expat) license
+
+2. SBCL -- http://www.sbcl.org/
+   Public Domain, partly licensed under the MIT and BSD licenses
+
+3. ASDF -- https://common-lisp.net/project/asdf/
+   Licensed under the MIT (Expat) license
+
+4. Quicklisp -- https://www.quicklisp.org/beta/
+   Licensed under the MIT (Expat) license
    
-2. CFFI -- https://common-lisp.net/project/cffi/
-   Licensed under the MIT License
+5. CFFI -- https://common-lisp.net/project/cffi/
+   Licensed under the MIT (Expat) license
+
+6. Deploy -- https://shinmera.github.io/deploy/
+   Licensed under the Artistic license
