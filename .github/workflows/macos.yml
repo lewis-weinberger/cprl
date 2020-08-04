@@ -19,7 +19,7 @@ jobs:
         unzip blt.zip
         sudo cp BearLibTerminal_${BLT_VERSION}/OSX/libBearLibTerminal.dylib /usr/local/lib/
     - name: install SBCL
-      run: sudo brew install sbcl
+      run: brew install sbcl
     - name: install Quicklisp
       run: |
         wget https://beta.quicklisp.org/quicklisp.lisp
