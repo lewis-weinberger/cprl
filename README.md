@@ -1,7 +1,7 @@
 # cprl
 > cyberpunk roguelike
 
-![Linux](https://github.com/lewis-weinberger/cprl/workflows/linux-build/badge.svg)
+![Linux](https://github.com/lewis-weinberger/cprl/workflows/Linux/badge.svg)
 
 This is a work in progress. 
 

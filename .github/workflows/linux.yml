@@ -1,4 +1,4 @@
-name: linux-build
+name: Linux
 
 on:
   push:
@@ -32,6 +32,6 @@ jobs:
         path: 'quicklisp/local-projects/cprl'
     - name: compilation
       run: sbcl --disable-debugger \
-                --eval "(load "quicklisp/setup.lisp") \
+                --eval "(load "quicklisp/setup.lisp")" \
                 --eval "(ql:quickload :cprl)" \
                 --eval "(asdf:make :cprl)"
