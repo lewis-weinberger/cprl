@@ -1,31 +1,28 @@
 (in-package :cl-user)
 
+(defpackage :config
+  (:use :common-lisp)
+  (:export :*normal-fg*
+	   :*normal-bg*
+	   :*sel-fg*
+	   :*sel-bg*))
+
 (defpackage :blt
-  (:use :common-lisp :cffi)
-  (:export :terminal-open
-	   :terminal-close
-	   :terminal-refresh
-	   :terminal-clear
-	   :terminal-clear-area
-	   :terminal-put
-	   :terminal-read
-	   :terminal-has-input
-	   :terminal-peek
-	   :terminal-set))
+  (:use :common-lisp :cffi :config)
+  (:export :start
+	   :stop
+	   :refresh
+	   :clear
+	   :input
+	   :colour
+	   :set-colour
+	   :get-colour
+	   :with-colour
+	   :display))
 
 (defpackage :ui
-  (:use :common-lisp)
-  (:export :with-user-interface
-	   :start
-	   :stop
-	   :display
-	   :flush
-	   :clear
-	   :box
-	   :input
-	   :pane-display
-	   :pane-clear
-	   :pane-box))
+  (:use :common-lisp :config)
+  (:export :start-screen))
 
 (defpackage :cprl
   (:use :common-lisp)

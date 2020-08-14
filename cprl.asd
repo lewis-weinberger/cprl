@@ -15,6 +15,7 @@
                 :serial t
                 :components
                 ((:file "packages")
+		 (:file "config")
                  (:file "blt")
 		 (:file "ui")
                  (:file "main")))))
