@@ -3,6 +3,7 @@
 
 [![Linux](https://github.com/lewis-weinberger/cprl/workflows/Linux/badge.svg)](https://github.com/lewis-weinberger/cprl/actions)
 [![MacOS](https://github.com/lewis-weinberger/cprl/workflows/MacOS/badge.svg)](https://github.com/lewis-weinberger/cprl/actions)
+[![Windows](https://github.com/lewis-weinberger/cprl/workflows/Windows/badge.svg)](https://github.com/lewis-weinberger/cprl/actions)
 
 This is a work in progress. 
 

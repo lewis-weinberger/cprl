@@ -1,0 +1,43 @@
+name: Windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+defaults:
+  run:
+    shell: cmd
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+    - name: install BearLibTerminal
+      run: |
+        curl.exe -L http://foo.wyrd.name/_media/en:bearlibterminal:bearlibterminal_0.15.7.zip -o "%GITHUB_WORKSPACE%\blt.zip"
+        tar.exe -xvf "%GITHUB_WORKSPACE%\blt.zip"
+        dir "%GITHUB_WORKSPACE%"
+    - name: install SBCL
+      run: |
+        curl.exe -L http://prdownloads.sourceforge.net/sbcl/sbcl-2.0.0-x86-64-windows-binary.msi -o "%GITHUB_WORKSPACE%\sbcl.msi"
+        mkdir "%GITHUB_WORKSPACE%\sbcl"
+        msiexec.exe /a "%GITHUB_WORKSPACE%\sbcl.msi" targetdir="%GITHUB_WORKSPACE%\sbcl" /qn
+        dir "%GITHUB_WORKSPACE%\sbcl"
+    - name: install Quicklisp
+      run: |
+        set SBCL_HOME=%GITHUB_WORKSPACE%\sbcl\PFiles\Steel Bank Common Lisp\2.0.0
+        cd "%SBCL_HOME%"
+        curl.exe -L https://beta.quicklisp.org/quicklisp.lisp -o quicklisp.lisp
+        sbcl.exe --non-interactive --load "quicklisp.lisp" --eval "(quicklisp-quickstart:install :path \"D:/a/cprl/cprl/quicklisp/\")"
+        dir "%GITHUB_WORKSPACE%"
+    - name: compilation
+      run: |
+        copy D:\a\cprl\cprl\BearLibTerminal_0.15.7\Windows64\BearLibTerminal.dll C:\Windows\System32
+        set SBCL_HOME=%GITHUB_WORKSPACE%\sbcl\PFiles\Steel Bank Common Lisp\2.0.0
+        cd "%SBCL_HOME%"
+        sbcl.exe --non-interactive --load "%GITHUB_WORKSPACE%\quicklisp\setup.lisp" --eval "(push #p\"D:/a/cprl/cprl/\" asdf:*central-registry*)" --eval "(ql:quickload :cprl)" --eval "(asdf:make :cprl)"
+        dir "%GITHUB_WORKSPACE%\bin"
