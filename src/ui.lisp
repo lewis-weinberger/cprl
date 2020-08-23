@@ -51,31 +51,52 @@
 
 (defun draw-start-screen (sel)
   (blt:clear)
-  (blt:display "CPRL" 35 10)
+  (blt:display-centred " ██████\\  ███████\\  ███████\\  ██\\       
+██  __██\\ ██  __██\\ ██  __██\\ ██ |      
+██ /  \\__|██ |  ██ |██ |  ██ |██ |      
+██ |      ███████  |███████  |██ |      
+██ |      ██  ____/ ██  __██< ██ |      
+██ |  ██\\ ██ |      ██ |  ██ |██ |      
+\\██████  |██ |      ██ |  ██ |████████\\ 
+ \\______/ \\__|      \\__|  \\__|\\________|"
+		       1)
+  (blt:display-centred "A Cyberpunk Roguelike Game" 10)
+  (blt:display (format nil
+		       "Version ~A.~A.~A"
+		       *major-version*
+		       *minor-version*
+		       *patch-version*) 1 22)
   (draw-selection sel (list
 		       :start (list :text "Start game" :x 35 :y 13)
-		       :quit (list :text "Quit" :x 35 :y 14)))
+		       :tutorial (list :text "Tutorial" :x 35 :y 14)
+		       :quit (list :text "Quit" :x 35 :y 15)))
   (blt:refresh))
 
 (defun start-screen ()
   "Display the opening screen of the game, with the option to start or quit."
   (with-screen
-    (selection-loop (list :start 'home-screen :quit)
+    (selection-loop (list :start 'home-screen :tutorial 'dungeon-screen :quit)
 		    'draw-start-screen)))
 
 (defun draw-home-screen (sel)
   (blt:clear)
-  (blt:display "HOME" 1 1)
+  (blt:display-centred "H.O.M.E. - Helpful Organisational Monitor Enhancement" 1)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 1 2 36 11)
+  (blt:display "input" 2 2)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 1 13 36 9)
+  (blt:display "info" 2 13)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 37 2 42 20)
+  (blt:display "description" 38 2)
   (draw-selection sel (list
 		       :quest
-		       (list :text "Start next quest" :x 25 :y 10)
+		       (list :text "Start next quest" :x 3 :y 4)
 		       :hotel
-		       (list :text "Visit the Blue Cafe Hotel" :x 25 :y 12)
+		       (list :text "Visit the Blue Cafe Hotel" :x 3 :y 6)
 		       :bazaar
-		       (list :text "Visit the Bazaar" :x 25 :y 14)
+		       (list :text "Visit the Bazaar" :x 3 :y 8)
 		       :adchq
-		       (list :text "Infiltrate Akuma-Druden Corp. HQ" :x 25 :y 16)))
-  (blt:display "Press q to quit!" 1 22)
+		       (list :text "Infiltrate Akuma-Druden Corp. HQ" :x 3 :y 10)))
+  (blt:display-centred "[Q] Quit   [UP/DOWN/ENTER] Navigate   [M] Menu" 22)
   (blt:refresh))
 
 (defun home-screen ()

@@ -2,7 +2,10 @@
 
 (defpackage :config
   (:use :common-lisp)
-  (:export :*normal-fg*
+  (:export :*major-version*
+	   :*minor-version*
+	   :*patch-version*
+	   :*normal-fg*
 	   :*normal-bg*
 	   :*sel-fg*
 	   :*sel-bg*))
@@ -18,7 +21,9 @@
 	   :set-colour
 	   :get-colour
 	   :with-colour
-	   :display))
+	   :display
+	   :display-centred
+	   :box))
 
 (defpackage :ui
   (:use :common-lisp :config)
