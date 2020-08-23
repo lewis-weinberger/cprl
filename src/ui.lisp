@@ -11,49 +11,94 @@
 	  (progn ,@body)
        (blt:stop))))
 
+(defun next-key (sel plist)
+  (let ((i (position sel plist)))
+    (if (= i (- (length plist) 2))
+	(first plist)
+	(nth (+ i 2) plist))))
+
+(defun prev-key (sel plist)
+  (let ((i (position sel plist)))
+    (if (= i 0)
+	(nth (- (length plist) 2) plist)
+	(nth (- i 2) plist))))
+
+(defmacro selection-loop (options draw)
+  (let ((sel (gensym)))
+    `(let ((,sel (first ,options)))
+       (funcall ,draw ,sel)
+       (loop do
+	    (case (blt:input)
+	      (:q (return))
+	      (:close (return))
+	      (:up (setf ,sel (prev-key ,sel ,options)))
+	      (:down (setf ,sel (next-key ,sel ,options)))
+	      (:enter (if (eq ,sel :quit)
+			  (return)
+			  (funcall (getf ,options ,sel)))))
+	    (funcall ,draw ,sel)))))
+
+(defun draw-selection (sel options)
+  (loop for p in options by #'cddr
+     for props = (getf options p)
+     for text = (getf props :text)
+     for x = (getf props :x)
+     for y = (getf props :y)
+     if (eq p sel) do
+       (blt:display text x y :fg *sel-fg* :bg *sel-bg*)
+     else do
+       (blt:display text x y)))
+
 (defun draw-start-screen (sel)
   (blt:clear)
   (blt:display "CPRL" 35 10)
-  (if sel
-      (progn
-	(blt:display "Start game" 35 13 :fg *sel-fg* :bg *sel-bg*)
-	(blt:display "Quit" 35 14))
-      (progn
-	(blt:display "Start game" 35 13)
-	(blt:display "Quit" 35 14 :fg *sel-fg* :bg *sel-bg*)))
+  (draw-selection sel (list
+		       :start (list :text "Start game" :x 35 :y 13)
+		       :quit (list :text "Quit" :x 35 :y 14)))
   (blt:refresh))
 
 (defun start-screen ()
   "Display the opening screen of the game, with the option to start or quit."
   (with-screen
-      (let ((quitp nil)
-	    (sel t)) ; "Start game" is selected first
-	(draw-start-screen sel)
-	(loop while (not quitp) do
-	     (let ((key (blt:input)))
-	       (case key
-		 (:q (setf quitp t))
-		 (:close (setf quitp t))
-		 (:up (setf sel (not sel)))
-		 (:down (setf sel (not sel)))
-		 (:enter (if sel
-			     (game-screen)
-			     (setf quitp t))))
-	       (draw-start-screen sel))))))
+    (selection-loop (list :start 'home-screen :quit)
+		    'draw-start-screen)))
+
+(defun draw-home-screen (sel)
+  (blt:clear)
+  (blt:display "HOME" 1 1)
+  (draw-selection sel (list
+		       :quest
+		       (list :text "Start next quest" :x 25 :y 10)
+		       :hotel
+		       (list :text "Visit the Blue Cafe Hotel" :x 25 :y 12)
+		       :bazaar
+		       (list :text "Visit the Bazaar" :x 25 :y 14)
+		       :adchq
+		       (list :text "Infiltrate Akuma-Druden Corp. HQ" :x 25 :y 16)))
+  (blt:display "Press q to quit!" 1 22)
+  (blt:refresh))
+
+(defun home-screen ()
+  "Display the home screen of the game."
+  (selection-loop (list :quest 'dungeon-screen
+			:hotel 'dungeon-screen
+			:bazaar 'dungeon-screen
+			:adchq 'dungeon-screen)
+		  'draw-home-screen))
 
 (defvar player-x 1)
 (defvar player-y 1)
 
-(defun draw-game-screen ()
+(defun draw-dungeon-screen ()
   (blt:clear)
   (blt:display "@" player-x player-y)
   (blt:display "Press q to quit!" 1 22)
   (blt:refresh))
 
-(defun game-screen ()
-  "Display main game screen."
+(defun dungeon-screen ()
+  "Display dungeon screen, used for exploring locations."
   (let ((quitp nil))
-    (draw-game-screen)
+    (draw-dungeon-screen)
     (loop while (not quitp) do
 	 (let ((key (blt:input)))
 	   (case key
@@ -63,6 +108,9 @@
 	     (:down (incf player-y))
 	     (:right (incf player-x))
 	     (:left (decf player-x))))
-	 (draw-game-screen))))
+	 (draw-dungeon-screen))))
 
-(defun menu-screen ())
+(defun menu-screen ()
+  "Display menu screen.")
+
+

@@ -109,7 +109,7 @@
 	  ,@body)
      (set-colour ,*normal-fg* ,*normal-bg*)))
 
-(defun display (string x y &key width fg bg)
+(defun display (string x y &key width (fg *normal-fg*) (bg *normal-bg*))
   "Display STRING on the screen at coordinate (X, Y).
 If WIDTH is provided, wrap text onto next line when it reaches WIDTH.
 If FG or BG are provided, set the text colour."
