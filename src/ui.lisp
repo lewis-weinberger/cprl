@@ -97,6 +97,7 @@
 		       :adchq
 		       (list :text "Infiltrate Akuma-Druden Corp. HQ" :x 3 :y 10)))
   (blt:display-centred "[Q] Quit   [UP/DOWN/ENTER] Navigate   [M] Menu" 22)
+  (blt:display (game:describe-job *player*) 39 4 :width 38)
   (blt:refresh))
 
 (defun home-screen ()

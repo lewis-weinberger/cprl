@@ -6,6 +6,9 @@
 (defparameter *minor-version* 0)
 (defparameter *patch-version* 0)
 
+(defvar *player*)
+
+
 ;;; Colours -------------------------------------------------------------------
 
 

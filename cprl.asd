@@ -15,7 +15,11 @@
                 :serial t
                 :components
                 ((:file "packages")
+		 (:file "macros")
 		 (:file "config")
                  (:file "blt")
+		 (:file "entity")
+		 (:file "jobs")
+		 (:file "player")
 		 (:file "ui")
                  (:file "main")))))

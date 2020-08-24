@@ -156,7 +156,7 @@ If FG or BG are provided, set the text colour."
        with w = x
        with h = y
        for c across string do
-	 (when (or (eq w width) (eq c #\Newline))
+	 (when (or (eq (- w x) width) (eq c #\Newline))
 	   (setf w x)
 	   (incf h))
 	 (unless (eq c #\Newline)
