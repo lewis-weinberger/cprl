@@ -59,7 +59,7 @@
 ██ |  ██\\ ██ |      ██ |  ██ |██ |      
 \\██████  |██ |      ██ |  ██ |████████\\ 
  \\______/ \\__|      \\__|  \\__|\\________|"
-		       1)
+		       1 :fg *cyberspace-fg*)
   (blt:display-centred "A Cyberpunk Roguelike Game" 10)
   (blt:display (format nil
 		       "Version ~A.~A.~A"
@@ -75,21 +75,21 @@
 (defun start-screen ()
   "Display the opening screen of the game, with the option to start or quit."
   (with-screen
-    (selection-loop (list :start 'home-screen :tutorial 'dungeon-screen :quit)
+    (selection-loop (list :start 'home-screen :tutorial 'tutorial-screen :quit)
 		    'draw-start-screen)))
 
 (defun draw-home-screen (sel)
   (blt:clear)
   (blt:display-centred "H.O.M.E. - Helpful Organisational Monitor Enhancement" 1)
   (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 1 2 36 11)
-  (blt:display "input" 2 2)
+  (blt:display "input" 2 2 :fg *label-fg*)
   (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 1 13 36 9)
-  (blt:display "info" 2 13)
+  (blt:display "info" 2 13 :fg *label-fg*)
   (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 37 2 42 20)
-  (blt:display "description" 38 2)
+  (blt:display "description" 38 2 :fg *label-fg*)
   (draw-selection sel (list
-		       :quest
-		       (list :text "Start next quest" :x 3 :y 4)
+		       :job
+		       (list :text "Start next job" :x 3 :y 4)
 		       :hotel
 		       (list :text "Visit the Blue Cafe Hotel" :x 3 :y 6)
 		       :bazaar
@@ -102,37 +102,89 @@
 
 (defun home-screen ()
   "Display the home screen of the game."
-  (selection-loop (list :quest 'dungeon-screen
-			:hotel 'dungeon-screen
-			:bazaar 'dungeon-screen
-			:adchq 'dungeon-screen)
+  (selection-loop (list :job 'job-screen
+			:hotel 'hotel-screen
+			:bazaar 'bazaar-screen
+			:adchq 'adchq-screen)
 		  'draw-home-screen))
 
-(defvar player-x 1)
-(defvar player-y 1)
+(defun move-player (location dx dy)
+  "Move player only when allowed."
+  (let ((x (+ (game:x *player*) dx))
+	(y (+ (game:y *player*) dy)))
+    (when (game:valid-move location x y)
+      (setf (game:x *player*) x))
+    (when (game:valid-move location x y)
+      (setf (game:y *player*) y))))
 
-(defun draw-dungeon-screen ()
+(defmacro player-loop (location draw)
+  (let ((quitp (gensym)))
+    `(let ((,quitp nil))
+       (funcall ,draw ,location)
+       (loop :while (not ,quitp) :do
+	    (case (blt:input)
+	      (:q (setf ,quitp t))
+	      (:close (setf ,quitp t))
+	      (:up (move-player ,location 0 -1))
+	      (:num8 (move-player ,location 0 -1))
+	      (:down (move-player ,location 0 1))
+	      (:num2 (move-player ,location 0 1))
+	      (:right (move-player ,location 1 0))
+	      (:num6 (move-player ,location 1 0))
+	      (:left (move-player ,location -1 0))
+	      (:num4 (move-player ,location -1 0))
+	      (:num7 (move-player ,location -1 -1))
+	      (:num9 (move-player ,location 1 -1))
+	      (:num1 (move-player ,location -1 1))
+	      (:num3 (move-player ,location 1 1)))
+	    (funcall ,draw ,location)))))
+
+(defun draw-bazaar-screen (bazaar)
   (blt:clear)
-  (blt:display "@" player-x player-y)
-  (blt:display "Press q to quit!" 1 22)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 1 1 49 21)
+  (blt:display "bazaar" 2 1 :fg *label-fg*)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 50 1 29 11)
+  (blt:display "description" 51 1 :fg *label-fg*)
+  (blt:box "┃" "┃" "━" "━" "┏" "┗" "┓" "┛" 50 12 29 10)
+  (blt:display "info" 51 12 :fg *label-fg*)
+  (let* ((start-x 3)
+	 (start-y 3)
+	 (mid-x 25)
+	 (mid-y 11)
+	 (width (- mid-x start-x))
+	 (height (- mid-y start-y)))
+    (multiple-value-bind (layout x y)
+	(game:sub-location bazaar
+			   (game:x *player*)
+			   (game:y *player*)
+			   width
+			   height
+			   mid-x
+			   mid-y)
+      (blt:display layout x y :fg *bazaar-fg*))
+    (blt:display "@" mid-x mid-y))
+  (blt:display-centred "[Q] Quit   [UP/DOWN/LEFT/RIGHT] Move   [L] Look   [M] Menu" 22)
   (blt:refresh))
 
-(defun dungeon-screen ()
-  "Display dungeon screen, used for exploring locations."
-  (let ((quitp nil))
-    (draw-dungeon-screen)
-    (loop while (not quitp) do
-	 (let ((key (blt:input)))
-	   (case key
-	     (:q (setf quitp t))
-	     (:close (setf quitp t))
-	     (:up (decf player-y))
-	     (:down (incf player-y))
-	     (:right (incf player-x))
-	     (:left (decf player-x))))
-	 (draw-dungeon-screen))))
+(defun bazaar-screen ()
+  "Display bazaar screen."
+  (setf (game:x *player*) *player-bazaar-x*)
+  (setf (game:y *player*) *player-bazaar-y*)
+  (player-loop *bazaar* 'draw-bazaar-screen))
 
-(defun menu-screen ()
-  "Display menu screen.")
+(defun draw-job-screen ())
 
+(defun job-screen ())
+
+(defun draw-hotel-screen ())
+
+(defun hotel-screen ())
+
+(defun draw-adchq-screen ())
+
+(defun adchq-screen ())
+
+(defun draw-tutorial-screen ())
+
+(defun tutorial-screen ())
 

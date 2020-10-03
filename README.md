@@ -13,4 +13,4 @@ See [INSTALL](./INSTALL.md) for installation instructions.
 
 ![Start Menu](./screenshots/start.png)
 ![Home Screen](./screenshots/home.png)
-![Dungeon Screen](./screenshots/dungeon.png)
+![Dungeon Screen](./screenshots/bazaar.png)

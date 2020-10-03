@@ -9,4 +9,7 @@
     :accessor description)
    (location
     :initarg :location
-    :accessor location)))
+    :accessor location)
+   (start
+    :initarg :start
+    :accessor start)))

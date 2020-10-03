@@ -2,8 +2,12 @@
 
 (in-package :cprl)
 
+(defun init ()
+  (setf *player* (game:init-player "3Jane"))
+  (setf *bazaar* (game:init-bazaar)))
+
 (defun main ()
   "Entry point for game. Performs initialisation and displays the start menu."
-  (setf *player* (game:init-player "3Jane"))
+  (init)
   (ui:start-screen)
   (sb-ext:exit))

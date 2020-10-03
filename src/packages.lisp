@@ -10,10 +10,16 @@
 	   :*minor-version*
 	   :*patch-version*
 	   :*player*
+	   :*bazaar*
+	   :*player-bazaar-x*
+	   :*player-bazaar-y*
 	   :*normal-fg*
 	   :*normal-bg*
 	   :*sel-fg*
-	   :*sel-bg*))
+	   :*sel-bg*
+	   :*label-fg*
+	   :*bazaar-fg*
+	   :*cyberspace-fg*))
 
 (defpackage :blt
   (:use :common-lisp :cffi :macros :config)
@@ -33,7 +39,14 @@
 (defpackage :game
   (:use :common-lisp :macros :config)
   (:export :init-player
-	   :describe-job))
+	   :describe-job
+	   :x
+	   :y
+	   :text-to-layout
+	   :init-bazaar
+	   :print-layout
+	   :sub-location
+	   :valid-move))
 
 (defpackage :ui
   (:use :common-lisp :macros :config)
