@@ -40,7 +40,8 @@
 (defun describe-job (player)
   (if-let ((job (first (jobs player))))
     (description job)
-    "Currently you do not have any jobs. Visit the Bazaar!"))
+    "Currently you do not have any jobs.
+Visit the Bazaar!"))
 
 (defun start-job (player)
   (if-let ((job (first (jobs player))))

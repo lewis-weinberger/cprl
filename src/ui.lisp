@@ -75,7 +75,7 @@
 (defun start-screen ()
   "Display the opening screen of the game, with the option to start or quit."
   (with-screen
-    (selection-loop (list :start 'home-screen :tutorial 'tutorial-screen :quit)
+    (selection-loop (list :start 'home-screen :tutorial 'tutorial-screen :quit nil)
 		    'draw-start-screen)))
 
 (defun draw-home-screen (sel)
