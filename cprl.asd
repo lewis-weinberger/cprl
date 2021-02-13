@@ -6,7 +6,7 @@
   :bug-tracker "https://github.com/lewis-weinberger/cprl/issues"
   :source-control (:git "git@github.com:lewis-weinberger/cprl.git")
   :description "A Cyberpunk-inspired Roguelike game."
-  :depends-on (:cffi)
+  :depends-on (:cffi :float-features)
   :defsystem-depends-on (:deploy)
   :build-operation "deploy-op"
   :build-pathname "cprl"

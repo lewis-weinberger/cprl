@@ -3,8 +3,8 @@
 (in-package :ui)
 
 (defmacro with-screen (&body body)
-  `(sb-int:with-float-traps-masked
-       (:inexact :underflow :overflow :invalid :divide-by-zero)
+  `(float-features:with-float-traps-masked
+       T
      (blt:start)
      (blt:refresh)
      (unwind-protect

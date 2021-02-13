@@ -10,4 +10,4 @@
   "Entry point for game. Performs initialisation and displays the start menu."
   (init)
   (ui:start-screen)
-  (sb-ext:exit))
+  (uiop:quit))
