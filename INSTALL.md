@@ -50,15 +50,6 @@ CL-USER> (asdf:make :cprl)
 
 This takes advantage of the handy [Deploy](https://github.com/Shinmera/deploy) library. The above command should produce a new directory, `bin`, containing the executable and libraries (e.g. on Linux `cprl` and `libBearLibTerminal.so`).
 
-## Known-working versions
-The above setup has been tested to work on:
-
-- MacOS 10.15.6 with SBCL 2.0.6, BearLibTerminal 0.15.7, CFFI 0.23.0
-- Gentoo Linux with SBCL 2.0.5, BearLibTerminal 0.15.7, CFFI 0.23.0
-- Microsoft Windows 10 1909 with SBCL 2.0.0, BearLibTerminal 0.15.7, CFFI 0.23.0
-
-See also these [workflows](https://github.com/lewis-weinberger/cprl/actions).
-
 ## Troubleshooting
 
 Please post an [issue](https://github.com/lewis-weinberger/cprl/issues) if you run into problems with the above.

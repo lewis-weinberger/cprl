@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2020 Lewis Weinberger
+Copyright (c) 2021 Lewis Weinberger
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -39,3 +39,6 @@ Libraries and software used by cprl
 
 6. Deploy -- https://shinmera.github.io/deploy/
    Licensed under the Artistic license
+
+7. Float-Features -- https://shinmera.github.io/float-features
+   Licensed under the zlib license

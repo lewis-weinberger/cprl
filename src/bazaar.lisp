@@ -1,6 +1,6 @@
 ;;;; the Bazaar
 
-(in-package :game)
+(in-package :cprl)
 
 (defvar *bazaar-layout* "####################################################################################################
 #                                                                                                  #
@@ -106,7 +106,5 @@
 (defun init-bazaar ()
   (setf *player-bazaar-x* 53)
   (setf *player-bazaar-y* 48)
-  (make-instance 'location
-		 :entities nil
-		 :layout (text-to-layout *bazaar-layout* 100 100)
-		 :description ""))
+  (setf *bazaar* (make-location :entities nil
+                                :layout (text-to-layout *bazaar-layout* 100 100))))

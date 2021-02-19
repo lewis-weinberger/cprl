@@ -1,15 +1,8 @@
 ;;;; Jobs functionality
 
-(in-package :game)
+(in-package :cprl)
 
-(defclass job ()
-  ((description
-    :initarg :description
-    :initform ""
-    :accessor description)
-   (location
-    :initarg :location
-    :accessor location)
-   (start
-    :initarg :start
-    :accessor start)))
+(defstruct job
+  (description "a job" :type string)
+  (location (make-location) :type location)
+  (start (lambda (j)) :type function))

@@ -1,49 +1,22 @@
 ;;;; Player functionality
 
-(in-package :game)
+(in-package :cprl)
 
-(defclass player (entity)
-  ((name
-    :initarg :name
-    :initform "No name"
-    :accessor name
-    :documentation "Name of player character")
-   (level
-    :initarg :level
-    :initform 0
-    :accessor level
-    :documentation "Level determines total attribute points.")
-   (experience
-    :initarg :experience
-    :initform 0
-    :accessor experience
-    :documentation "Experience determines level.")
-   (jobs
-    :initarg :jobs
-    :initform ()
-    :accessor jobs
-    :documentation "List of (remaining) jobs taken on at the Bazaar.")
-   (items
-    :initarg :items
-    :initform ()
-    :accessor items
-    :documentation "List of items acquired doing jobs.")
-   (liquidity
-    :initarg :liquidity
-    :initform 0
-    :accessor liquidity
-    :documentation "Money acquired doing jobs.")))
+(defstruct (player (:include entity))
+  (name "player" :type string) ;; Name of player character
+  (level 0 :type integer)      ;; Level determines total attribute points
+  (exp 0.0 :type float)        ;; Experience determines level
+  (jobs '() :type list)        ;; List of unfinished jobs taken on at the Bazaar
+  (items '() :type list)       ;; List of items acquired doing jobs
+  (cash 0.0 :type float))      ;; Money acquired doing jobs
 
-(defun init-player (name)
-  (make-instance 'player :name name :x 1 :y 1))
-
-(defun describe-job (player)
-  (if-let ((job (first (jobs player))))
+(defun describe-job (p)
+  (if-let ((job (first (player-jobs p))))
     (description job)
     "Currently you do not have any jobs.
 Visit the Bazaar!"))
 
-(defun start-job (player)
-  (if-let ((job (first (jobs player))))
+(defun start-job (p)
+  (if-let ((job (first (player-jobs p))))
     (start job)
     nil))

@@ -6,48 +6,48 @@
 ;;; Raw FFI -------------------------------------------------------------------
 
 
-(define-foreign-library bearlibterminal
+(cffi:define-foreign-library bearlibterminal
   (:darwin "libBearLibTerminal.dylib")
   (:unix "libBearLibTerminal.so")
   (t (:default "BearLibTerminal")))
 
-(use-foreign-library bearlibterminal)
+(cffi:use-foreign-library bearlibterminal)
 
-(defcfun "terminal_open" :int)
+(cffi:defcfun "terminal_open" :int)
 
-(defcfun "terminal_close" :void)
+(cffi:defcfun "terminal_close" :void)
 
-(defcfun "terminal_refresh" :void)
+(cffi:defcfun "terminal_refresh" :void)
 
-(defcfun "terminal_clear" :void)
+(cffi:defcfun "terminal_clear" :void)
 
-(defcfun "terminal_clear_area" :void
+(cffi:defcfun "terminal_clear_area" :void
   (x :int)
   (y :int)
   (width :int)
   (height :int))
 
-(defcfun "terminal_has_input" :int)
+(cffi:defcfun "terminal_has_input" :int)
 
-(defcfun "terminal_read" :int)
+(cffi:defcfun "terminal_read" :int)
 
-(defcfun "terminal_peek" :int)
+(cffi:defcfun "terminal_peek" :int)
 
-(defcfun "terminal_set" :int
+(cffi:defcfun "terminal_set" :int
   (s :string))
 
-(defcfun "terminal_put" :void
+(cffi:defcfun "terminal_put" :void
   (x :int)
   (y :int)
   (code :int))
 
-(defcfun "terminal_color" :void
+(cffi:defcfun "terminal_color" :void
   (colour :uint))
 
-(defcfun "terminal_bkcolor" :void
+(cffi:defcfun "terminal_bkcolor" :void
   (colour :uint))
 
-(defcfun "terminal_state" :int
+(cffi:defcfun "terminal_state" :int
   (slot :int))
 
 
@@ -148,14 +148,14 @@
 (defun get-colour ()
   "Get current foreground and background colours."
   (values (terminal-state #xC4)
-	  (terminal-state #xC5)))
+          (terminal-state #xC5)))
 
 (defmacro with-colour ((fg bg) &body body)
   "Perform actions in BODY with colour set by FG and BG."    
   `(unwind-protect
-	(progn
-	  (set-colour ,fg ,bg)
-	  ,@body)
+        (progn
+          (set-colour ,fg ,bg)
+          ,@body)
      (set-colour ,*normal-fg* ,*normal-bg*)))
 
 (defun display (string x y &key width (fg *normal-fg*) (bg *normal-bg*))
@@ -167,12 +167,12 @@ If FG or BG are provided, set the text colour."
        with w = x
        with h = y
        for c across string do
-	 (when (or (eq (- w x) width) (eq c #\Newline))
-	   (setf w x)
-	   (incf h))
-	 (unless (eq c #\Newline)
-	   (terminal-put w h (char-code c))
-	   (incf w)))))
+         (when (or (eq (- w x) width) (eq c #\Newline))
+           (setf w x)
+           (incf h))
+         (unless (eq c #\Newline)
+           (terminal-put w h (char-code c))
+           (incf w)))))
 
 (defun line-length (string)
   (loop for c across string
@@ -207,14 +207,14 @@ out to WIDTH and HEIGHT. If FG or BG are provided, set the border colour."
        with xmax = (+ x (1- width))
        with ymax = (+ y (1- height))
        for i from x to xmax do
-	 (loop
-	    for j from y to ymax do
-	      (cond
-		((and (= j y) (= i x)) (terminal-put i j (char-code tl)))
-		((and (= j ymax) (= i xmax)) (terminal-put i j (char-code br)))
-		((and (= j y) (= i xmax)) (terminal-put i j (char-code tr)))
-		((and (= j ymax) (= i x)) (terminal-put i j (char-code bl)))
-		((= j y) (terminal-put i j (char-code ts)))
-		((= j ymax) (terminal-put i j (char-code bs)))
-		((= i x) (terminal-put i j (char-code ls)))
-		((= i xmax) (terminal-put i j (char-code rs))))))))
+         (loop
+           for j from y to ymax do
+             (cond
+               ((and (= j y) (= i x)) (terminal-put i j (char-code tl)))
+               ((and (= j ymax) (= i xmax)) (terminal-put i j (char-code br)))
+               ((and (= j y) (= i xmax)) (terminal-put i j (char-code tr)))
+               ((and (= j ymax) (= i x)) (terminal-put i j (char-code bl)))
+               ((= j y) (terminal-put i j (char-code ts)))
+               ((= j ymax) (terminal-put i j (char-code bs)))
+               ((= i x) (terminal-put i j (char-code ls)))
+               ((= i xmax) (terminal-put i j (char-code rs))))))))
