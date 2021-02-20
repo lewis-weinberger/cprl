@@ -11,6 +11,4 @@ See [OUTLINE](./OUTLINE.md) for initial thoughts on the game's design.
 
 See [INSTALL](./INSTALL.md) for installation instructions.
 
-![Start Menu](./screenshots/start.png)
-![Home Screen](./screenshots/home.png)
-![Dungeon Screen](./screenshots/bazaar.png)
+![Screenshot](./screenshots/screenshot.gif)

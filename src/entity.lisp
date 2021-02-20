@@ -17,6 +17,7 @@
 
 (defstruct (entity (:include attr))
   "A game entity"
-  (hp 0.0 :type float) ;; Hit points, i.e health
-  (x 1 :type integer)  ;; x-coordinate of entity in its given location
-  (y 1 :type integer)) ;; y-coordinate of entity in its given location
+  (hp 0.0 :type float)         ;; Hit points, i.e health
+  (x 1 :type integer)          ;; x-coordinate of entity in its given location
+  (y 1 :type integer)          ;; y-coordinate of entity in its given location
+  (kind 'entity :type symbol)) ;; The type of entity (how it will be displayed)

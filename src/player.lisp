@@ -20,3 +20,12 @@ Visit the Bazaar!"))
   (if-let ((job (first (player-jobs p))))
     (start job)
     nil))
+
+(defun move-player (location dx dy)
+  "Move player only when allowed."
+  (let ((x (+ (entity-x *player*) dx))
+        (y (+ (entity-y *player*) dy)))
+    (when (valid-move location x y)
+      (setf (entity-x *player*) x))
+    (when (valid-move location x y)
+      (setf (entity-y *player*) y))))

@@ -108,15 +108,6 @@
                         :adchq 'adchq-screen)
                   'draw-home-screen))
 
-(defun move-player (location dx dy)
-  "Move player only when allowed."
-  (let ((x (+ (entity-x *player*) dx))
-        (y (+ (entity-y *player*) dy)))
-    (when (valid-move location x y)
-      (setf (entity-x *player*) x))
-    (when (valid-move location x y)
-      (setf (entity-y *player*) y))))
-
 (defmacro player-loop (location draw)
   (let ((quitp (gensym)))
     `(let ((,quitp nil))
@@ -137,6 +128,7 @@
            (:num9 (move-player ,location 1 -1))
            (:num1 (move-player ,location -1 1))
            (:num3 (move-player ,location 1 1)))
+         (move-entities ,location)
          (funcall ,draw ,location)))))
 
 (defun draw-bazaar-screen (bazaar)

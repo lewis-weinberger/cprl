@@ -4,3 +4,5 @@
 *.dylib
 bin
 *.ttf
+gif
+*.ini

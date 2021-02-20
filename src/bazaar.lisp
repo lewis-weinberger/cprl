@@ -106,5 +106,9 @@
 (defun init-bazaar ()
   (setf *player-bazaar-x* 53)
   (setf *player-bazaar-y* 48)
-  (setf *bazaar* (make-location :entities nil
-                                :layout (text-to-layout *bazaar-layout* 100 100))))
+  (setf *bazaar* (make-location :entities `(,(make-entity :kind :trader :x 48 :y 48))
+                                :layout (text-to-layout *bazaar-layout* 100 100)
+                                :free (make-array '(100 100))
+                                :path (make-array '(100 100))))
+  (find-free *bazaar*)
+  (find-path *bazaar* *player-bazaar-x* *player-bazaar-y*))
