@@ -18,20 +18,16 @@
            :*cyberspace-fg*))
 
 (defpackage :blt
-  (:use :common-lisp :macros :config)
-  (:export :start
+  (:use :common-lisp)
+  (:export :blt-ui
+           :start
            :stop
-           :refresh
-           :clear
            :input
-           :colour
-           :set-colour
-           :get-colour
-           :with-colour
-           :display
-           :display-centred
-           :box))
+           :output
+           :flush
+           :clear
+           :set-colour))
 
 (defpackage :cprl
-  (:use :common-lisp :macros :config)
+  (:use :common-lisp :macros :config :blt)
   (:export :main))

@@ -21,20 +21,7 @@
 
 (cffi:defcfun "terminal_clear" :void)
 
-(cffi:defcfun "terminal_clear_area" :void
-  (x :int)
-  (y :int)
-  (width :int)
-  (height :int))
-
-(cffi:defcfun "terminal_has_input" :int)
-
 (cffi:defcfun "terminal_read" :int)
-
-(cffi:defcfun "terminal_peek" :int)
-
-(cffi:defcfun "terminal_set" :int
-  (s :string))
 
 (cffi:defcfun "terminal_put" :void
   (x :int)
@@ -47,31 +34,25 @@
 (cffi:defcfun "terminal_bkcolor" :void
   (colour :uint))
 
-(cffi:defcfun "terminal_state" :int
-  (slot :int))
+
+;;; UI class and methods ------------------------------------------------------
 
 
-;;; Wrappers ------------------------------------------------------------------
+(defclass blt-ui () ())
 
-
-(defun start ()
+(defmethod start ((ui blt-ui))
   "Open a terminal screen."
+  (declare (ignore ui))
   (terminal-open))
 
-(defun stop ()
+(defmethod stop ((ui blt-ui))
   "Close the terminal screen."
+  (declare (ignore ui))
   (terminal-close))
 
-(defun refresh ()
-  "Flush output to the terminal screen."
-  (terminal-refresh))
-
-(defun clear ()
-  "Clear the terminal screen."
-  (terminal-clear))
-
-(defun input ()
-  "Read user input (blocking)."
+(defmethod input ((ui blt-ui))
+  "Read user input, blocking until something can be read."
+  (declare (ignore ui))
   (case (terminal-read)
     (#x04 :a)
     (#x05 :b)
@@ -131,90 +112,23 @@
     (#x63 :numperiod)
     (otherwise nil)))
 
-(defun colour (a r g b)
-  "#xAARRGGBB colour format recognised by BearLibTerminal."
-  (let ((c 0))
-    (setf c (dpb a (byte 8 24) c))
-    (setf c (dpb r (byte 8 16) c))
-    (setf c (dpb g (byte 8 8) c))
-    (setf c (dpb b (byte 8 0) c))
-    c))
+(defmethod output ((ui blt-ui) x y c)
+  "Put a tile with given code C at grid coordinates (X,Y)"
+  (declare (ignore ui))
+  (terminal-put x y c))
 
-(defun set-colour (&optional fg bg)
+(defmethod flush ((ui blt-ui))
+  "Flush output to the terminal screen."
+  (declare (ignore ui))
+  (terminal-refresh))
+
+(defmethod clear ((ui blt-ui))
+  "Clear the terminal screen."
+  (declare (ignore ui))
+  (terminal-clear))
+
+(defmethod set-colour ((ui blt-ui) &optional fg bg)
   "Set colours for future printing to foreground FG and background BG."
+  (declare (ignore ui))
   (when fg (terminal-color fg))
   (when bg (terminal-bkcolor bg)))
-
-(defun get-colour ()
-  "Get current foreground and background colours."
-  (values (terminal-state #xC4)
-          (terminal-state #xC5)))
-
-(defmacro with-colour ((fg bg) &body body)
-  "Perform actions in BODY with colour set by FG and BG."    
-  `(unwind-protect
-        (progn
-          (set-colour ,fg ,bg)
-          ,@body)
-     (set-colour ,*normal-fg* ,*normal-bg*)))
-
-(defun display (string x y &key width (fg *normal-fg*) (bg *normal-bg*))
-  "Display STRING on the screen at coordinate (X, Y).
-If WIDTH is provided, wrap text onto next line when it reaches WIDTH.
-If FG or BG are provided, set the text colour."
-  (with-colour (fg bg)
-    (loop
-       with w = x
-       with h = y
-       for c across string do
-         (when (or (eq (- w x) width) (eq c #\Newline))
-           (setf w x)
-           (incf h))
-         (unless (eq c #\Newline)
-           (terminal-put w h (char-code c))
-           (incf w)))))
-
-(defun line-length (string)
-  (loop for c across string
-     if (char= c #\Newline)
-     return total
-     else
-     counting c into total
-     finally (return total)))
-
-(defun display-centred (string y &key width (fg *normal-fg*) (bg *normal-bg*))
-  "Display STRING aligned horizontally in the centre of the screen."
-  (let ((x (round (/ (- 80 (line-length string)) 2))))
-    (display string x y :width width :fg fg :bg bg)))
-
-(defmacro ensure-char (s)
-  `(when (stringp ,s)
-     (setf ,s (char ,s 0))))
-
-(defun box (ls rs ts bs tl bl tr br x y width height &key (fg *normal-fg*) (bg *normal-bg*))
-  "Display a box on the screen with top left corner coordinate (X, Y),
-out to WIDTH and HEIGHT. If FG or BG are provided, set the border colour."
-  (ensure-char ls)
-  (ensure-char rs)
-  (ensure-char ts)
-  (ensure-char bs)
-  (ensure-char tl)
-  (ensure-char bl)
-  (ensure-char tr)
-  (ensure-char br)
-  (with-colour (fg bg)
-    (loop
-       with xmax = (+ x (1- width))
-       with ymax = (+ y (1- height))
-       for i from x to xmax do
-         (loop
-           for j from y to ymax do
-             (cond
-               ((and (= j y) (= i x)) (terminal-put i j (char-code tl)))
-               ((and (= j ymax) (= i xmax)) (terminal-put i j (char-code br)))
-               ((and (= j y) (= i xmax)) (terminal-put i j (char-code tr)))
-               ((and (= j ymax) (= i x)) (terminal-put i j (char-code bl)))
-               ((= j y) (terminal-put i j (char-code ts)))
-               ((= j ymax) (terminal-put i j (char-code bs)))
-               ((= i x) (terminal-put i j (char-code ls)))
-               ((= i xmax) (terminal-put i j (char-code rs))))))))

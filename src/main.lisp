@@ -9,5 +9,6 @@
 (defun main ()
   "Entry point for game. Performs initialisation and displays the start menu."
   (init)
-  (start-screen)
-  (uiop:quit))
+  (let ((ui (make-instance 'blt-ui)))
+    (start-screen ui)
+  (uiop:quit)))
